@@ -1,4 +1,4 @@
-// Application entrypoint.
+// Application entrypoint. Initializes the App
 
 // Load up the application styles
 require("../styles/application.scss");
