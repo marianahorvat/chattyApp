@@ -59,7 +59,7 @@ addMessage = (event) => {
         username: this.state.currentUser.name,
         content: event.target.value
       };
-      this.sendMessageToServer(msg);
+      this.sendMessageToServer({message: msg});
       console.log("msg is: ", msg);
     }
   }
