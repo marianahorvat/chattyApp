@@ -8,18 +8,18 @@ class App extends Component {
     this.socket = new WebSocket('ws://localhost:3001');
     this.state = {
       currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
-      messages: [
-        {
-          id: 1,
-          username: "Bob",
-          content: "Has anyone seen my marbles?",
-        },
-        {
-          id: 2,
-          username: "Anonymous",
-          content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-        }
-      ]
+      messages: [],
+      //   {
+      //     id: 1,
+      //     username: "Bob",
+      //     content: "Has anyone seen my marbles?",
+      //   },
+      //   {
+      //     id: 2,
+      //     username: "Anonymous",
+      //     content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
+      //   }
+      // ]
     }
   }
 
@@ -30,22 +30,17 @@ componentDidMount() {
   this.socket.onopen = function (event) {
     console.log('Connected to server');
   };
-  setTimeout(() => {
-    console.log("Simulating incoming message");
-    // Add a new message to the list of messages in the data store
-    const newMessage = {id: 3, username: "Michelle", content: "Hello there!"};
-    const messages = this.state.messages.concat(newMessage)
-    // Update the state of the app component.
-    // Calling setState will trigger a call to render() in App and all child components.
-    this.setState({messages: messages})
-  }, 3000);
 }
-
-
 
 addName = (event) => {
   let newName = event.target.value
   this.setState({currentUser: {name:newName}})
+}
+
+// Send msg object as a JSON-formatted string.
+sendMessageToServer = (msg) => {
+  this.socket.send(JSON.stringify(msg));
+  // console.log("JSON.stringify(msg) is: ", JSON.stringify(msg));
 }
 
 addMessage = (event) => {
@@ -58,6 +53,14 @@ addMessage = (event) => {
       }
       const messages = this.state.messages.concat(newMessage)
       this.setState({messages: messages})
+
+      let msg = {
+        type: 'sendMessage',
+        username: this.state.currentUser.name,
+        content: event.target.value
+      };
+      this.sendMessageToServer(msg);
+      console.log("msg is: ", msg);
     }
   }
 
