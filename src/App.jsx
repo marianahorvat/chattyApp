@@ -36,6 +36,11 @@ componentDidMount() {
   }, 3000);
 }
 
+addName = (event) => {
+  let newName = event.target.value
+  this.setState({currentUser: {name:newName}})
+}
+
 addMessage = (event) => {
     if(event.key === 'Enter'){
       console.log('enter pressed here! ')
@@ -57,7 +62,8 @@ addMessage = (event) => {
         </nav>
         <MessageList messages={this.state.messages} />
         <ChatBar currentUser={this.state.currentUser} 
-                addMessage={this.addMessage}/>
+                addMessage={this.addMessage}
+                addName={this.addName} />
       </div>
     );
   }
