@@ -24,6 +24,13 @@ const wss = new SocketServer({ server });
 wss.on('connection', (ws) => {
   console.log('Client connected');
 
+  // update the connected number of users (usersCount)
+  // send wss.clients.size to get the number of users connected
+  wss.clients.forEach(function each(client) {
+    client.send(wss.clients.size);
+  });
+
+  //BROADCAST to everyone
   wss.broadcast = function broadcast(data) {
     wss.clients.forEach(function each(client) {
       client.send(JSON.stringify(data));
@@ -31,21 +38,27 @@ wss.on('connection', (ws) => {
     });
   };
   
-  ws.on('message', function incoming(incomingMessage) {
-    // console.log('incoming message is:', incomingMessage);
-    const parsedMessage = JSON.parse(incomingMessage);
-    // console.log('parsedMessage is', parsedMessage);
+  ws.on('message', (incomingData) => {
+    const parsedMessage = JSON.parse(incomingData);
     parsedMessage.message.id = uuidV1();
-    // console.log('parsedMessage is', parsedMessage.message);
     switch (parsedMessage.message.type) {
       case 'postMessage': parsedMessage.message.type = 'incomingMessage';
         break;
       case 'postNotification': parsedMessage.message.type = 'incomingNotification';
         break;
     }
-    wss.broadcast(parsedMessage);
+    let stringifiedMessage = JSON.stringify(parsedMessage);
+    wss.broadcast(stringifiedMessage);
   });
 
-  // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  ws.on('close', () => console.log('Client disconnected'));
+   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
+   ws.on('close', () => {
+    console.log('Client disconnected');
+  // update the connected number of users (usersCount)
+  // send wss.clients.size to get the number of users connected
+    wss.clients.forEach(function each(client) {
+      client.send(wss.clients.size);
+    });
+  });
 });
+
