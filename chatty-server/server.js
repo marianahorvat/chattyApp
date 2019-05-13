@@ -47,8 +47,8 @@ wss.on('connection', (ws) => {
       case 'postNotification': parsedMessage.message.type = 'incomingNotification';
         break;
     }
-    let stringifiedMessage = JSON.stringify(parsedMessage);
-    wss.broadcast(stringifiedMessage);
+    // let stringifiedMessage = JSON.stringify(parsedMessage);
+    wss.broadcast(parsedMessage);
   });
 
    // Set up a callback for when a client closes the socket. This usually means they closed their browser.
