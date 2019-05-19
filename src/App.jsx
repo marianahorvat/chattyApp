@@ -11,6 +11,7 @@ class App extends Component {
       messages: [], // messages coming from the server will be stored here as they arrive
       usersCount: 0,
     }
+    this.clearChat = this.clearChat.bind(this);
   }
 
 componentDidMount() {
@@ -59,13 +60,19 @@ addMessage = (event) => {
     }
   }
 
+  clearChat(){
+    this.setState({ messages: [] })
+  }
+
     // Passes the states and props to children
   render() {
     return (
       <div>
         <nav className="navbar">
-          <a href="/" className="navbar-brand">Chatty</a>
+          <a href="/" className="navbar-brand">Chatty Channel</a>
+          
             <span className="navbar-usersCount">{this.state.usersCount} users online</span>
+            <i className="fas fa-trash-alt navbar-brand" onClick={this.clearChat}></i>
         </nav>
         <MessageList messages={this.state.messages} />
         <ChatBar currentUser={this.state.currentUser} 
