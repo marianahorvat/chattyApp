@@ -12,4 +12,3 @@ class Notification extends Component {
 export default Notification;
 
 
-// check OldUserName and NewUserName cases props passed to templates

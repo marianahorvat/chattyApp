@@ -41,6 +41,7 @@ addName = (event) => {
       newusername: event.target.value
     };
     this.sendMessageToServer({ message: msg });
+    event.target.value = '';
   }
 }
 
@@ -57,6 +58,7 @@ addMessage = (event) => {
         content: event.target.value
       };
       this.sendMessageToServer({message: msg});
+      event.target.value = '';
     }
   }
 

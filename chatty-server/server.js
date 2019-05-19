@@ -34,7 +34,7 @@ wss.on('connection', (ws) => {
   wss.broadcast = function broadcast(data) {
     wss.clients.forEach(function each(client) {
       client.send(JSON.stringify(data));
-      console.log('Message sent to client from server is: ', data);
+      // console.log('Message sent to client from server is: ', data);
     });
   };
   
